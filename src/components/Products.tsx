@@ -24,7 +24,7 @@ const Products: React.FC<Props> = ({products}) => {
   const cartItems = useSelector((state: any) => state.cartReducer.items);
   const [inCart, setInCart] = useState<boolean>(false);
 
-  console.log('Cart Items', cartItems);
+  // console.log('Cart Items', cartItems);
 
   const addToCart = (product: Product) => {
     dispatch(requestAddToCart(product));
@@ -43,8 +43,17 @@ const Products: React.FC<Props> = ({products}) => {
   const renderProduct = ({item}: {item: Product}) => {
     const alreadyInCart = isItemInCart(item.id);
     return (
-      <View className="h-96 w-60 border-[1px] rounded border-gray-400 mb-2 mr-2">
-        <Image source={{uri: item.image}} className="h-[72%] w-full rounded " />
+      <View className="h-72 w-[170px] border-[1px] rounded border-[#6D6875] mb-2 mr-2 bg-[#FFCDB2]">
+        <Image
+          source={{uri: item.image}}
+          // className="h-[72%] w-full rounded"
+          style={{
+            objectFit: 'contain',
+            height: '62%',
+            width: '100%',
+            borderRadius: 2,
+          }}
+        />
 
         <View className="mt-1 p-1">
           <Text
@@ -61,8 +70,8 @@ const Products: React.FC<Props> = ({products}) => {
           </Text>
         </View>
 
-        <View className="border-[1px] border-[#5F6F52] bg-[#A9B388] h-4 w-14 rounded absolute bottom-1 left-1">
-          <Text className="text-[9px] text-[#5F6F00] font-bold text-center">
+        <View className="border-[1px] border-[#5F6F00] bg-[#3e433a] h-4 w-14 rounded absolute bottom-1 left-1">
+          <Text className="text-[9px] text-[#A9B388] font-bold text-center">
             {item.price}
           </Text>
         </View>
