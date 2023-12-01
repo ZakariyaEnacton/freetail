@@ -9,7 +9,9 @@ import {requestProductData} from '../Redux/Action/publicAction';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const {loading, products} = useSelector((state: any) => state.products);
+  const {loading, data} = useSelector((store: any) => store.productsReducer);
+
+  // console.log('Loading', data);
 
   useEffect(() => {
     dispatch(requestProductData());
@@ -20,7 +22,7 @@ const Home = () => {
       <Header />
       <ProductSection />
       <View className="px-2 mt-4">
-        {loading ? <Loader /> : <Products products={products} />}
+        {loading ? <Loader /> : <Products products={data} />}
       </View>
     </ScrollView>
   );

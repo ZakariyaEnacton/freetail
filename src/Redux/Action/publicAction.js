@@ -5,6 +5,9 @@ import {
   REQUEST_PRODUCT_DATA,
   SUCCESS_ADD_TO_CART,
   SUCCESS_PRODUCT_DATA,
+  REQUEST_REMOVE_FROM_CART,
+  SUCCESS_REMOVE_FROM_CART,
+  FAILED_REMOVE_FROM_CART,
 } from './actionTypes';
 
 export const requestProductData = () => ({
@@ -33,5 +36,20 @@ export const successAddToCart = product => ({
 
 export const failedAddToCart = error => ({
   type: FAILED_ADD_TO_CART,
+  payload: error,
+});
+
+export const requestRemoveFromCart = product => ({
+  type: REQUEST_REMOVE_FROM_CART,
+  payload: product,
+});
+
+export const successRemoveFromCart = product => ({
+  type: SUCCESS_REMOVE_FROM_CART,
+  payload: product,
+});
+
+export const failedRemoveFromCart = error => ({
+  type: FAILED_REMOVE_FROM_CART,
   payload: error,
 });

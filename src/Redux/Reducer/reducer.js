@@ -1,8 +1,10 @@
 import {
   FAILED_ADD_TO_CART,
   FAILED_PRODUCT_DATA,
+  FAILED_REMOVE_FROM_CART,
   SUCCESS_ADD_TO_CART,
   SUCCESS_PRODUCT_DATA,
+  SUCCESS_REMOVE_FROM_CART,
 } from '../Action/actionTypes';
 import {combineReducers} from 'redux';
 
@@ -50,14 +52,25 @@ const cartReducer = (state = initialCartState, action) => {
         ...state,
         error: action.payload,
       };
+    case SUCCESS_REMOVE_FROM_CART:
+      return {
+        ...state,
+        items: state.items.filter(item => item.id !== action.payload.id),
+        error: null,
+      };
+    case FAILED_REMOVE_FROM_CART:
+      return {
+        ...state,
+        error: action.payload,
+      };
     default:
       return state;
   }
 };
 
 const rootReducer = combineReducers({
-  products: productsReducer,
-  cart: cartReducer,
+  productsReducer,
+  cartReducer,
 });
 
 export default rootReducer;

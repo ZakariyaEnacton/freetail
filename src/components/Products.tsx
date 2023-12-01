@@ -1,5 +1,10 @@
 import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  requestAddToCart,
+  requestRemoveFromCart,
+} from '../Redux/Action/publicAction';
 
 interface Product {
   id: number;
@@ -15,7 +20,28 @@ interface Props {
 }
 
 const Products: React.FC<Props> = ({products}) => {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: any) => state.cartReducer.items);
+  const [inCart, setInCart] = useState<boolean>(false);
+
+  console.log('Cart Items', cartItems);
+
+  const addToCart = (product: Product) => {
+    dispatch(requestAddToCart(product));
+    setInCart(true);
+  };
+
+  const removeFromCart = (product: Product) => {
+    dispatch(requestRemoveFromCart(product));
+    setInCart(false);
+  };
+
+  const isItemInCart = (productId: number): boolean => {
+    return cartItems.some((item: any) => item.id === productId);
+  };
+
   const renderProduct = ({item}: {item: Product}) => {
+    const alreadyInCart = isItemInCart(item.id);
     return (
       <View className="h-96 w-60 border-[1px] rounded border-gray-400 mb-2 mr-2">
         <Image source={{uri: item.image}} className="h-[72%] w-full rounded " />
@@ -40,11 +66,23 @@ const Products: React.FC<Props> = ({products}) => {
             {item.price}
           </Text>
         </View>
-        <TouchableOpacity className="border-[1px] border-[#872341] bg-[#BE3144] h-4 w-14 rounded absolute bottom-1 right-1">
-          <Text className="text-[9px] text-[#22092C] font-bold text-center">
-            Add To Cart
-          </Text>
-        </TouchableOpacity>
+        {alreadyInCart ? (
+          <TouchableOpacity
+            onPress={() => removeFromCart(item)}
+            className="border-[1px] border-[#872341] bg-[#FCF5ED] h-4 w-24 rounded absolute bottom-1 right-1">
+            <Text className="text-[9px] text-[#BE3144] font-bold text-center">
+              Remove From Cart
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => addToCart(item)}
+            className="border-[1px] border-[#872341] bg-[#BE3144] h-4 w-14 rounded absolute bottom-1 right-1">
+            <Text className="text-[9px] text-[#FCF5ED] font-bold text-center">
+              Add To Cart
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
