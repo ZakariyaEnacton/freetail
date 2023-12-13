@@ -5,6 +5,7 @@ import {
   requestAddToCart,
   requestRemoveFromCart,
 } from '../Redux/Action/publicAction';
+import BottomModal from './Modal/BottomModal';
 
 interface Product {
   id: number;
@@ -23,8 +24,17 @@ const Products: React.FC<Props> = ({products}) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: any) => state.cartReducer.items);
   const [inCart, setInCart] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   // console.log('Cart Items', cartItems);
+
+  const openProductsModal = (product: Product) => {
+    setSelectedProduct(product);
+  };
+
+  const closeProductsModal = () => {
+    setSelectedProduct(null);
+  };
 
   const addToCart = (product: Product) => {
     dispatch(requestAddToCart(product));
@@ -43,16 +53,18 @@ const Products: React.FC<Props> = ({products}) => {
   const renderProduct = ({item}: {item: Product}) => {
     const alreadyInCart = isItemInCart(item.id);
     return (
-      <View className="h-72 w-[170px] border-[1px] rounded border-[#6D6875] mb-2 mr-2 bg-[#FFCDB2]">
+      <TouchableOpacity
+        className="h-72 w-[170px] border-[1px] rounded border-[#6D6875] mb-2 mr-2 bg-[#FFCDB2]"
+        onPress={() => openProductsModal(item)}>
         <Image
           source={{uri: item.image}}
           // className="h-[72%] w-full rounded"
           style={{
-            objectFit: 'contain',
             height: '62%',
             width: '100%',
             borderRadius: 2,
           }}
+          resizeMode="contain"
         />
 
         <View className="mt-1 p-1">
@@ -92,7 +104,7 @@ const Products: React.FC<Props> = ({products}) => {
             </Text>
           </TouchableOpacity>
         )}
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -105,6 +117,13 @@ const Products: React.FC<Props> = ({products}) => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
       />
+      {selectedProduct && (
+        <BottomModal
+          isOpen={!!selectedProduct}
+          closeModal={closeProductsModal}
+          product={selectedProduct}
+        />
+      )}
     </View>
   );
 };

@@ -24,8 +24,8 @@ const Home = () => {
     dispatch(requestProductData());
   }, [dispatch]);
 
-  let car: number = 12;
-  let _car = 12 as number;
+  // let car: number = 12;
+  // let _car = 12 as number;
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} className="bg-[#FFB2A2]">
